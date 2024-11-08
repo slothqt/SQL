@@ -30,4 +30,19 @@ where low_fats ='y' and recyclable ='y';
 --ex10
 select name from customer
 where referee_id <>2 or referee_id is null;
-
+--ex11
+select name, population, area from world
+where area >=3000000 or population >=25000000;
+--ex12
+select distinct author_id as id from views
+where author_id = viewer_id
+order by author_id;
+--ex13
+SELECT part, assembly_step FROM parts_assembly
+where finish_date is null;
+--ex14
+select * from lyft_drivers
+where not yearly_salary between 30000 and 70000;
+--ex15
+select advertising_channel from uber_advertising
+where money_spent >100000 and year =2019;
