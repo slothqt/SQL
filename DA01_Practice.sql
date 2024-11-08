@@ -24,3 +24,10 @@ order by name;
 select name from employee
 where salary >2000 and months <10
 order by employee_id;
+--ex9
+select product_id from products
+where low_fats ='y' and recyclable ='y';
+--ex10
+select name from customer
+where referee_id <>2 or referee_id is null;
+
