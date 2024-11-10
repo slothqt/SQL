@@ -24,3 +24,14 @@ MAX(issued_amount)-min(issued_amount) as disparity
 FROM monthly_cards_issued
 group by card_name
 order by disparity desc;
+--ex8
+--ex9
+select *
+from cinema
+where id%2=1 and description <> "boring"
+order by rating desc;
+--ex10
+select teacher_id,
+count(distinct subject_id) as cnt
+from teacher
+group by teacher_id;
