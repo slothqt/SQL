@@ -18,3 +18,9 @@ FROM posts
 where post_date between '2021-01-01' and '2022-01-01'
 group by user_id
 having count(post_id) >1;
+--ex7
+SELECT card_name,
+MAX(issued_amount)-min(issued_amount) as disparity
+FROM monthly_cards_issued
+group by card_name
+order by disparity desc;
