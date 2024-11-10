@@ -35,3 +35,14 @@ select teacher_id,
 count(distinct subject_id) as cnt
 from teacher
 group by teacher_id;
+--ex11
+select user_id,
+    count(follower_id) as followers_count
+from followers
+group by user_id
+order by user_id;
+--ex12
+select class
+from courses
+group by class
+having count(student) >=5;
