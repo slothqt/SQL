@@ -19,7 +19,7 @@ HAVING COUNT(skill) =3
 order by candidate_id;
 --ex6
 SELECT user_id,
-MAX(post_date::date)-MIN(post_date::date) as days_between
+date(MAX(post_date))-date(MIN(post_date)) as days_between
 FROM posts
 where post_date between '2021-01-01' and '2022-01-01'
 group by user_id
