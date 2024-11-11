@@ -11,6 +11,12 @@ SELECT
 round(CAST(sum(item_count*order_occurrences)/sum(order_occurrences) as decimal),1) as mean
 FROM items_per_order;
 --ex5
+SELECT candidate_id
+FROM candidates
+where skill in ('Python','Tableau','PostgreSQL')
+group by candidate_id
+HAVING COUNT(skill) =3
+order by candidate_id;
 --ex6
 SELECT user_id,
 MAX(post_date::date)-MIN(post_date::date) as days_between
