@@ -8,7 +8,7 @@ from station;
 --ex3
 --ex4
 SELECT 
-round(sum(item_count::decimal*order_occurrences)/sum(order_occurrences),1) as mean
+round(CAST(sum(item_count*order_occurrences)/sum(order_occurrences) as decimal),1) as mean
 FROM items_per_order;
 --ex5
 --ex6
