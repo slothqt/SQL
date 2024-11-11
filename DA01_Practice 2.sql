@@ -31,6 +31,13 @@ FROM monthly_cards_issued
 group by card_name
 order by disparity desc;
 --ex8
+SELECT manufacturer,
+abs(sum(total_sales-cogs)) as total_loss,
+count(product_id) as drug_count
+FROM pharmacy_sales
+where total_sales<cogs
+group by manufacturer
+order by total_loss desc;
 --ex9
 select *
 from cinema
