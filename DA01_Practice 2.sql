@@ -6,6 +6,9 @@ where id%2 =0;
 select count(city)-count(distinct city)
 from station;
 --ex3
+select
+ceiling(avg(salary)-avg(replace(salary,0,'')))
+from employees;
 --ex4
 SELECT 
 round(CAST(sum(item_count*order_occurrences)/sum(order_occurrences) as decimal),1) as mean
