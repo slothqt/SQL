@@ -16,12 +16,19 @@ case
     else 'No'
 end as Triangle
 from triangle;
---ex3
+--ex3 --> Cach 1
 SELECT 
 ROUND(100*sum(CASE
   when call_category is null or call_category ='n/a' then 1
   else 0
 END)/count(case_id)::decimal,1) as uncategorised_call_pct
+FROM callers;
+--ex3 --> Cach 2
+SELECT 
+ROUND(100*sum(CASE
+  when call_category is null or call_category ='n/a' then 1
+  else 0
+END)/cast(count(case_id) as decimal),1) as uncategorised_call_pct
 FROM callers;
 --ex4
 select
