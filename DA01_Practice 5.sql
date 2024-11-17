@@ -39,3 +39,18 @@ join employees mng
 on emp.reports_to=mng.employee_id
 group by mng.employee_id, mng.name
 order by mng.employee_id;
+--ex6
+select a.product_name, sum(b.unit) as unit
+from products a
+left join orders b
+on a.product_id=b.product_id
+where to_char(b.order_date,'yyyy-mm') ='2020-02'
+group by a.product_id, a.product_name
+having sum(b.unit) >=100;
+--ex7
+SELECT a.page_id
+FROM pages a
+left join page_likes b
+on a.page_id=b.page_id
+where user_id is null
+order by a.page_id;
