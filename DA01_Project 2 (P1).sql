@@ -23,6 +23,10 @@ with clean1 as (
   group by month_year
   order by month_year)
 
+  /* insight: 
+- từ 1/2019-4/2022, mặc dù có sự biến động nhưng nhìn chung, cả 2 chỉ số ‘tổng số lượng người mua’ và ‘tổng số lượng đơn hàng’ đều tăng dần theo thời gian
+- trong đó, tháng 7/2021 có sự tăng đột biến */
+
 --Q2
 , Q2 as (
   select
@@ -30,8 +34,15 @@ with clean1 as (
     count(distinct user_id) as distinct_users,
     round(sum(sale_price)/count(order_id),2) as average_order_value
   from clean1
+  where month_year between '2019-01' and '2022-04'
   group by month_year
   order by month_year)
+
+  /* insights:
+- ‘tổng số người dùng khác nhau’ tăng chậm và có sự dao động từ 1/2019-4/2022 (4-341 users)
+- ‘giá trị đơn hàng trung bình’ ở 2 tháng: 2/2019 & 4/2019 cao vượt trội hơn so với các tháng còn lại cùng giai đoạn (lần lượt $164 và $108.13)
+- mặc dù distinct_users ở tháng 3/2019 hơn gấp đôi distinct_users ở tháng 2/2019 (10>4), ‘giá trị đơn hàng trung bình’ giảm mạnh vào tháng 3/2019 từ $164 xuống $36
+- từ 3/2019 - 4/2022, ‘giá trị đơn hàng trung bình’ dao động trong khoảng $50 ~ $60 */
 
 --Q3
 , young as (
@@ -44,7 +55,8 @@ with clean1 as (
           gender,
           first_name, last_name, age,
           min(age) over(partition by gender order by gender) as youngest
-        from bigquery-public-data.thelook_ecommerce.users) as h
+        from bigquery-public-data.thelook_ecommerce.users
+        where FORMAT_DATE('%Y-%m',date(created_at)) between '2019-01' and '2022-04') as h
   where age=youngest)
 , old as (
   select
@@ -56,7 +68,8 @@ with clean1 as (
           gender,
           first_name, last_name, age,
           max(age) over(partition by gender order by gender) as oldest
-        from bigquery-public-data.thelook_ecommerce.users) as h
+        from bigquery-public-data.thelook_ecommerce.users
+        where FORMAT_DATE('%Y-%m',date(created_at)) between '2019-01' and '2022-04') as j
   where age=oldest)
 , Q3 as (
   select
@@ -65,7 +78,11 @@ with clean1 as (
   from (
       select * from young
       union all
-      select * from old) as j)
+      select * from old) as k)
+
+  /* insights:
+- trẻ nhất: 12 tuổi, số lượng: 1786
+- lớn nhất: 70 tuổi, số lượng: 1786 */
 
 --Q4
 , rank_table as (
@@ -80,7 +97,7 @@ with clean1 as (
       round(sum(product_retail_price-cost),2) as profit,
     from bigquery-public-data.thelook_ecommerce.inventory_items
     where sold_at is not null
-    group by FORMAT_DATE('%Y-%m',date(sold_at)), product_id, product_name) as k
+    group by FORMAT_DATE('%Y-%m',date(sold_at)), product_id, product_name) as l
   order by month_year)
 , Q4 as (
   select * from rank_table
