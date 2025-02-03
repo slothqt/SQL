@@ -69,7 +69,7 @@ with clean as (
 select
   order_id,
   product_id,
-	sale_price,
+  sale_price,
   date(created_at) as order_date,
   user_id
 from
