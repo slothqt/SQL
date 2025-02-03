@@ -67,17 +67,14 @@ order by d.Month, d.Year)
 --Tạo retention cohort analysis
 with clean as (
 select
-  z.order_id,
-  x.product_id,
-  x.sale_price,
-  date(z.created_at) as order_date,
-  z.user_id
-from 
-  bigquery-public-data.thelook_ecommerce.orders z
-join
-  bigquery-public-data.thelook_ecommerce.order_items x
-  on z.order_id=x.order_id
-where z.status='Complete')
+  order_id,
+  product_id,
+	sale_price,
+  date(created_at) as order_date,
+  user_id
+from
+  bigquery-public-data.thelook_ecommerce.order_items
+where status='Complete')
 , cohort_draft as (
   select
     user_id,
@@ -96,7 +93,7 @@ where z.status='Complete')
       clean) as m
   order by user_id)
 
-, y as (
+, z as (
 select
   cohort_date,
   index,
@@ -117,7 +114,7 @@ select
   sum(case when index=2 then customer_count else 0 end) as m2,
   sum(case when index=3 then customer_count else 0 end) as m3,
   sum(case when index=4 then customer_count else 0 end) as m4
-from y
+from z
 group by
   cohort_date
 order by
