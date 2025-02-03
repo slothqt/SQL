@@ -108,6 +108,7 @@ group by
 order by
   cohort_date)
 
+, customer_cohort as (
 select
   cohort_date,
   sum(case when index=1 then customer_count else 0 end) as m1,
@@ -118,4 +119,14 @@ from z
 group by
   cohort_date
 order by
-  cohort_date
+  cohort_date)
+
+-- retention cohort
+select
+  cohort_date,
+  concat(round(m1/m1*100.00),'%') as m1,
+  concat(round(m2/m1*100.00),'%') as m2,
+  concat(round(m3/m1*100.00),'%') as m3,
+  concat(round(m4/m1*100.00),'%') as m4
+from
+  customer_cohort
